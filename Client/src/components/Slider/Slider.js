@@ -37,7 +37,7 @@ class Slider extends Component {
                         <h3>Choose your car brand</h3>
                         <hr />
                         <Row>
-                            <Col md={{ span: 8, offset: 2 }}>
+                            <Col md={{ span: 6, offset: 3 }}>
                                 <ul className="m-auto">
                                     <li>
                                         <Link to="#">
@@ -62,6 +62,16 @@ class Slider extends Component {
                                     <li>
                                         <Link to="#">
                                             <img src="./assets/images/logo/Dodge-logo.png" alt="Dodge logo" />
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="#">
+                                            <img src="./assets/images/logo/Ford-logo.png" alt="Ford logo" />
+                                        </Link>
+                                    </li>
+                                     <li>
+                                        <Link to="#">
+                                            <img src="./assets/images/logo/Tesla-logo.png" alt="Tesla logo" />
                                         </Link>
                                     </li>
                                 </ul>

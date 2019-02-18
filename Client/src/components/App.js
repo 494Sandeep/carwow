@@ -9,6 +9,7 @@ import Login from './Login/Login';
 import Footer from './Footer/Footer';
 import Car_Choose from './Layout/Car_Choose';
 import Contact from './Contact/Contact';
+import NotFound from './NotFound/NotFound';
 
 
 class App extends Component {
@@ -23,6 +24,7 @@ class App extends Component {
                         <Route path="/used-cars" component={Car_Choose} />
                         <Route path="/contact" component={Contact} />
                         <Route exact path="/" component={Home} />
+                        <Route path="*" component={NotFound}/>
                     </Switch>
                     <Footer />
                 </div>
