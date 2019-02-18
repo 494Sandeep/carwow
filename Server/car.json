@@ -1,0 +1,66 @@
+[
+    {
+         "image": ["Tesla_Model3_Ext.jpg" , "Tesla_Model3_Int.jpg" , "Tesla_Model3_Side.jpg", "Tesla_Model3_Back.jpg"],
+         "brand": "Tesla",
+         "model": "Model 3",
+         "price": "48.0 Lakh",
+         "keySpecs": [
+             {
+                 "mileage": "N/A"
+             },
+             {
+                 "engine": "N/A"
+             },
+             {
+                 "bhp": "N/A"
+             },
+             {
+                 "transmission": "Automatic"
+             },
+             {
+                 "seats": "5"
+             },
+             {
+                 "airbags": "4"
+             },
+             {
+                 "fueltype": "Electric(Battery)"
+             },
+             {
+                 "bootspace": "540"
+             }
+         ]
+     },
+     {
+         "image": ["Tesla_ModelY_Ext.jpg" , "Tesla_ModelY_Int.jpg" , "Tesla_ModelY_Back.jpg", "Tesla_ModelY_Side.png"],
+         "brand": "Tesla",
+         "model": "Model Y",
+         "price": "50.0 Lakh",
+         "keySpecs": [
+             {
+                 "mileage": "N/A"
+             },
+             {
+                 "engine": "N/A"
+             },
+             {
+                 "bhp": "N/A"
+             },
+             {
+                 "transmission": "Automatic"
+             },
+             {
+                 "seats": "5"
+             },
+             {
+                 "airbags": "2"
+             },
+             {
+                 "fueltype": "Electric(Battery)"
+             },
+             {
+                 "bootspace": "600"
+             }
+         ]
+     }
+ ]
