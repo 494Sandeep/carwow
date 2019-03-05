@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css?family=Vollkorn:400,700,900');
+.car_chooser {
+    .card_filter {
+        padding: 0 10%;
+        background-color: #2392fa;
+        height: 380px;
+        font-family: 'Vollkorn', serif;
+        .card_filter_header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding-top: 32px;
+            padding-bottom: 32px;
+            color: #fff;
+            h1 {
+                font-size: 56px;
+                font-weight: 400 !important;
+            }
+            p {
+                font-size: 28px;
+                font-weight: 300;
+            }
+        }
+        .card_filter_custom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: row;
+            button {
+                font-size: 18px;
+                background: #fff;
+                border-radius: 4px;
+                padding: 9px 55px;
+                border: none;
+                cursor: pointer;
+                font-family: 'serif';
+                font-weight: 700 !important;
+            }
+        }
+        .result {
+            padding: 10px 0;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 300;
+        }
+    }
+    .cc_cars_container {
+        width: 90%;
+        margin: auto; // background: transparent;
+        .cc_cars {
+            position: relative;
+            top: -100px;
+        }
+    }
+}
+
+#Sort .head,
+#Filters .head {
+    text-align: center;
+}
+
+/****** Slider accordian *******/
+
+.slide-card {
+    margin: auto;
+}
+
+.slide-card {
+    cursor: pointer;
+    background: #00a4ff;
+    h3 {
+        padding: 15px 15px;
+        color: #191a1a;
+        font-size: 16px;
+    }
+    form {
+        border-bottom: 1px solid #8a8686;
+    }
+    .form-group1 {
+        display: flex;
+        justify-content: space-between;
+        background-color: #fff;
+        label {
+            margin: 0;
+        }
+    }
+}
+
+.sort_input_group {
+    .input_group {
+        padding: 10px 5px;
+        input{
+            margin-right: 10px;
+        }
+    }
+}
