@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Bounce from 'react-reveal/Bounce';
-import { Container, Row, Col } from 'react-bootstrap'
-import './Slider.scss'
+import { Container, Row, Col } from 'react-bootstrap';
+//CSS
+import './Slider.scss';
+//Apollo and graphql
+import { graphql } from "react-apollo";
+import { getAllBrands } from "../../queries/queries";
 class Slider extends Component {
     closeNav() {
         document.getElementById("mySidenav").style.width = "0";
@@ -20,15 +24,13 @@ class Slider extends Component {
                         <Bounce >
                             <p className="d-none d-md-block">our perfect car, compare offers from local and national dealers and buy at a price that’s right for you.</p>
                         </Bounce>
-
                         <a href="#carbrand">
                             <button className="select_car" onClick={this.handleShow}>
                                 Select a car
                             </button>
                         </a>
-
                         <button className="not_sure">
-                            <Link to="/car_chooser">Not sure what you want?</Link>
+                            <Link to="/car-chooser">Not sure what you want?</Link>
                         </button>
                     </div>
                 </div>
@@ -39,50 +41,26 @@ class Slider extends Component {
                         <Row>
                             <Col md={{ span: 6, offset: 3 }}>
                                 <ul className="m-auto">
-                                    <li>
-                                        <Link to="#">
-                                            <img src="./assets/images/logo/Audi-logo.png" alt="Audi logo" />
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#">
-                                            <img src="./assets/images/logo/BMW-logo.png" alt="BMW logo" />
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#">
-                                            <img src="./assets/images/logo/Volvo-logo.png" alt="Volvo logo" />
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#">
-                                            <img src="./assets/images/logo/Jaguar-logo.png" alt="Jaguar logo" />
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#">
-                                            <img src="./assets/images/logo/Dodge-logo.png" alt="Dodge logo" />
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#">
-                                            <img src="./assets/images/logo/Ford-logo.png" alt="Ford logo" />
-                                        </Link>
-                                    </li>
-                                     <li>
-                                        <Link to="#">
-                                            <img src="./assets/images/logo/Tesla-logo.png" alt="Tesla logo" />
-                                        </Link>
-                                    </li>
+                                    {
+                                        !this.props.data.loading ?
+                                            this.props.data.brands.map(item => {
+                                                return (
+                                                    <li key={item.id}>
+                                                        <Link to={`/car-chooser/${item.brand}`}>
+                                                            <img src={`./assets/images/logo/${item.image}`} alt={item.brand} />
+                                                        </Link>
+                                                    </li>
+                                                )
+                                            })
+                                            : <div>Loading ...</div>
+                                    }
                                 </ul>
                             </Col>
                         </Row>
-
-
                     </Container>
                 </div>
             </div >
         )
     }
 }
-export default Slider;
+export default graphql(getAllBrands)(Slider);

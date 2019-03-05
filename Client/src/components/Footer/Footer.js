@@ -5,7 +5,7 @@ import './Footer.scss';
 class Footer extends Component {
     render() {
         return (
-            <div className='footer_container'>
+            <div className='footer_container' fixed="bottom">
                 <div className='social_bar'>
                     <div className='social_bar_items'>
                         <i className="fab fa-facebook-f"></i>

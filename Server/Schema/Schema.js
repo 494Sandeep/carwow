@@ -2,6 +2,7 @@ var graphql = require('graphql');
 var User = require('../models/user')
 var Car = require('../models/car')
 var Brand = require('../models/brand')
+var Fav = require('../models/fav')
 var {
     GraphQLObjectType,
     GraphQLSchema,
@@ -10,7 +11,6 @@ var {
     GraphQLList,
     GraphQLNonNull
 } = graphql;
-
 const CarType = new GraphQLObjectType({
     name: 'CarType',
     fields: () => ({
@@ -33,7 +33,19 @@ const keySpecType = new GraphQLObjectType({
         transmission: { type: GraphQLString },
         seats: { type: GraphQLString },
         airbags: { type: GraphQLString },
-        fueltype: { type: GraphQLString }
+        fueltype: { type: GraphQLString },
+        bootspace: { type: GraphQLString }
+    })
+})
+const favType = new GraphQLObjectType({
+    name: 'favType',
+    fields: () => ({
+        carID: { type: GraphQLID },
+        userID: { type: GraphQLID },
+        image: { type: new GraphQLList(GraphQLString) },
+        brand: { type: GraphQLString },
+        model: { type: GraphQLString },
+        price: { type: GraphQLString }
     })
 })
 const userType = new GraphQLObjectType({
@@ -43,7 +55,13 @@ const userType = new GraphQLObjectType({
         profilePic: { type: GraphQLString },
         email: { type: GraphQLString },
         username: { type: GraphQLString },
-        password: { type: GraphQLString }
+        password: { type: GraphQLString },
+        fav: {
+            type: new GraphQLList(favType),
+            resolve(parent, args) {
+                return Fav.find({ userID: parent.id })
+            }
+        }
     })
 })
 const BrandType = new GraphQLObjectType({
@@ -74,8 +92,50 @@ const RootQuery = new GraphQLObjectType({
         },
         carList: {
             type: new GraphQLList(CarType),
+            args: {
+                brand: { type: GraphQLList(GraphQLString) },
+                seats: { type: GraphQLList(GraphQLString) },
+                fuel: { type: GraphQLList(GraphQLString) },
+                sortType: { type: GraphQLString }
+            },
             resolve(parent, args) {
-                return Car.find({})
+                console.log(args)
+                if (args.brand.length !== 0 && args.seats.length !== 0 && args.fuel.length !== 0) {
+                    console.log("All")
+                    // if selection is made by all type filter
+                    return Car.find({ $and: [{ brand: args.brand }, { "keySpecs.seats": args.seats }, { "keySpecs.fueltype": args.fuel }] })
+                } else if (args.brand.length !== 0 && args.seats.length !== 0) {
+                    //get Selected brand & Seats
+                    return Car.find({ $and: [{ brand: args.brand }, { "keySpecs.seats": args.seats }] })
+                }
+                else if (args.brand.length !== 0 && args.fuel.length !== 0) {
+                    //get Selected brand & fuel
+                    return Car.find({ $and: [{ brand: args.brand }, { "keySpecs.fueltype": args.fuel }] })
+                }
+                else if (args.seats.length !== 0 && args.fuel.length !== 0) {
+                    //get Selected seats & fuel
+                    return Car.find({ $and: [{ "keySpecs.seats": args.seats }, { "keySpecs.fueltype": args.fuel }] })
+                }
+                else if (args.brand.length !== 0) {
+                    //get Selected brand
+                    return Car.find({ brand: args.brand })
+                }
+                else if (args.seats.length !== 0) {
+                    //get Selected seats query
+                    return Car.find({ "keySpecs.seats": args.seats })
+                }
+                else if (args.fuel.length !== 0) {
+                    //get Selected seats query
+                    return Car.find({ "keySpecs.fueltype": args.fuel })
+                }
+                else if (args.sortType === 'acces')
+                    return Car.find({}).sort({ price: -1 })
+                else if (args.sortType === 'desc')
+                    return Car.find({}).sort({ price: 1 })
+                else if (args.sortType === "make")
+                    return Car.find({}).sort({ brand: 1, model: 1 })
+                else
+                    return Car.find({})
             }
         },
         user: {
@@ -90,7 +150,7 @@ const RootQuery = new GraphQLObjectType({
         brands: {
             type: new GraphQLList(BrandType),
             resolve(parent, args) {
-                return Brand.find({})
+                return Brand.find({}).sort({ brand: 1 })
             }
         },
         brand: {
@@ -123,6 +183,43 @@ const Mutation = new GraphQLObjectType({
                     password: args.password
                 })
                 return user.save();
+            }
+        },
+        addFav: {
+            type: favType,
+            args: {
+                carID: { type: new GraphQLNonNull(GraphQLID) },
+                userID: { type: new GraphQLNonNull(GraphQLID) },
+                image: { type: new GraphQLList(GraphQLString) },
+                brand: { type: new GraphQLNonNull(GraphQLString) },
+                model: { type: new GraphQLNonNull(GraphQLString) },
+                price: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve(parent, args) {
+                Fav.find({ $and: [{ carID: args.carID }, { userID: args.userID }] }, (err, result) => {
+                    if (result.length === 0) {
+                        var fav = new Fav({
+                            carID: args.carID,
+                            userID: args.userID,
+                            image: args.image,
+                            brand: args.brand,
+                            model: args.model,
+                            price: args.price
+                        });
+                        return fav.save();
+                    } else {
+                        return { "message": "You have already added this to favoriates" }
+                    }
+                })
+            }
+        },
+        removeFav: {
+            type: favType,
+            args: {
+                carID: { type: new GraphQLNonNull(GraphQLID) }
+            },
+            resolve(parent, args) {
+                return Fav.remove({ carID: args.carID })
             }
         }
     }

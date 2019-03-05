@@ -3,31 +3,27 @@
     position: relative;
     #favHeart {
         position: absolute;
-        top: 10px;
         right: 10px;
         background-color: transparent;
         border: none;
         padding: 0;
         margin: 0;
-        .fa-heart {
-            color: #807f7f;
-            font-size: 25px;
-        }
+        color: #807f7f;
+        font-size: 30px;
         &:hover {
             cursor: pointer;
-            .fa-heart {
-                color: #d8341e;
-                font-size: 25px;
-            }
+            color: #d8341e;
         }
         &:focus {
             outline-style: none;
-        }
-        .fav {
             color: #d8341e;
-            transform: rotate(360deg);
+            transform: rotate(90deg);
             transition: all .3s ease-in-out;
         }
+    }
+    &:hover {
+        box-shadow: 2px 3px 4px rgba(214, 214, 214, 0.842);
+        transition: all 0.2s ease-in-out;
     }
 }
 

@@ -2,18 +2,13 @@ import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
 import { Field, Form } from 'react-final-form';
 import { Button, Row, Col, Form as Btform } from 'react-bootstrap';
-
+import GoogleLogin from 'react-google-login';
 import './Login.scss';
-
-
-
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
-
-
     sleep = (ms) => {
         new Promise(resolve => setTimeout(resolve, ms))
     }
@@ -22,14 +17,16 @@ class Login extends Component {
         await this.sleep(50000);
         window.alert(JSON.stringify(values, undefined, 2));
     }
-
     required = values => (values ? undefined : 'Required');
-
-
     render() {
+        const responseGoogle = (response) => {
+            console.log("google console");
+            console.log(response);
+            // this.signup(response, 'google');
+        }
         return (
             <Row>
-                <Col xs={{span: 10 , offset: 1}} sm={{span: 10 , offset: 1}} md={{ span: 4, offset: 4 }}>
+                <Col xs={{ span: 10, offset: 1 }} sm={{ span: 10, offset: 1 }} md={{ span: 4, offset: 4 }}>
                     <div className="login_container">
                         <div className="login_form">
                             <h1>Login to your account</h1>
@@ -37,8 +34,12 @@ class Login extends Component {
                             <Form onSubmit={this.showResults}>
                                 {({ handleSubmit, values, submitting }) =>
                                     <form className='form-container' onSubmit={handleSubmit}>
-
-                                        <Button className='btn_google' variant="primary" ><i className="fab fa-google"></i> Continue with google</Button>
+                                        <GoogleLogin
+                                            className='btn_google btn btn-primary'
+                                            clientId="145953429991-eeiugdr5dpvvehd8s2jglniahkouq8aa.apps.googleusercontent.com"
+                                            buttonText="Login with Google"
+                                            onSuccess={responseGoogle}
+                                            onFailure={responseGoogle} />
                                         <div className="login-buttons-divider">
                                             <div className="login-divider-or login-divider-or--white">
                                                 or
@@ -64,7 +65,6 @@ class Login extends Component {
                                             type='password'
                                             placeholder='Enter Password'
                                         >{({ input, meta, placeholder, type, label }) =>
-
                                             <Btform.Group>
                                                 <Btform.Label>{label}</Btform.Label>
                                                 <Btform.Control  {...input} type={type} className={(meta.active ? 'active' : '') && (meta.invalid && meta.touched ? 'input invalid' : 'input')} placeholder={placeholder} />
@@ -83,12 +83,11 @@ class Login extends Component {
                                                 </Btform.Group>
                                             </Col>
                                         </Row>
-                                        <Button disabled={submitting} variant="success" type="submit">
+                                        <Button disabled={submitting} variant="outline-success" type="submit">
                                             Submit
-                                             </Button>
+                                        </Button>
                                     </form>}
                             </Form>
-
                         </div>
                     </div>
                 </Col>
@@ -96,5 +95,4 @@ class Login extends Component {
         );
     }
 }
-
 export default Login;

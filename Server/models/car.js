@@ -13,7 +13,8 @@ var car = new Schema({
         transmission: String,
         seats: String,
         airbags: String,
-        fueltype: String
+        fueltype: String,
+        bootspace: String
     }
 });
 module.exports = mongoose.model('Car', car)

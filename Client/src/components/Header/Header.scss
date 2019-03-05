@@ -40,7 +40,7 @@
     .right_nav {
         display: flex !important;
         flex-direction: row;
-        align-items:center;
+        align-items: center;
         i {
             color: #fff;
             text-decoration: none;
@@ -55,7 +55,7 @@
                 padding: 0 5px;
             }
         }
-        a .fa-user{
+        a .fa-user {
             padding: 0;
         }
     }
@@ -68,7 +68,6 @@
     .nav_list.hide {
         display: none;
     }
-   
     .searchBar {
         display: flex;
         flex-direction: row;
@@ -110,8 +109,7 @@
     position: fixed;
     z-index: 1;
     top: 0;
-    right: 0;
-    border:1px solid rgba(43, 41, 41, 0.575);
+    border: 1px solid rgba(43, 41, 41, 0.575);
     background-color: rgb(255, 255, 255);
     overflow-x: hidden;
     transition: all ease-in-out 0.6s;
@@ -168,3 +166,59 @@
         left: 20%;
     }
 }
+
+.fav_list_container {
+    padding-bottom: 20px;
+    margin: 20px;
+    border-bottom: 1px solid #33b3b3;
+    .fav_detail {
+        padding: 0;
+        text-align: right;
+        position: relative;
+        .logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .fav_brand {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            font-weight: 700;
+        }
+        span {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            
+        }
+    }
+}
+ #favHeart {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+        .fa-heart {
+            color: #807f7f;
+            font-size: 25px;
+        }
+        &:hover {
+            cursor: pointer;
+            .fa-heart {
+                color: #d8341e;
+                font-size: 25px;
+            }
+        }
+        &:focus {
+            outline-style: none;
+        }
+        .fav {
+            color: #d8341e;
+            transform: rotate(360deg);
+            transition: all .3s ease-in-out;
+        }
+    }
