@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link, NavLink } from 'react-router-dom';
 import { Fade } from "react-reveal";
 import { Navbar, Nav, Row, Col } from 'react-bootstrap'
-import { openNav, closeNav } from "../Miscellaneous";
 
 import './Header.scss'
 //Apollo and graphql
@@ -68,7 +67,7 @@ class Header extends Component {
 						<div onClick={() => this.enableSearchBar()} className={this.state.toggleSearch || this.state.toggleNav ? 'hide' : 'show'}>
 							<i className="fas fa-search"></i>
 						</div>
-						<div onClick={openNav} id="openNav" className={this.state.toggleSearch || this.state.toggleNav ? 'hide' : 'show'}>
+						<div id="openNav" className={this.state.toggleSearch || this.state.toggleNav ? 'hide' : 'show'}>
 							<i className="fas fa-heart"><span style={{ color: 'red', fontSize: "20px" }}>{(!this.props.getFav.loading) ? this.props.getFav.user.fav.length : ""}</span></i>
 						</div>
 						<Link to='/users/sign_in'>
@@ -83,7 +82,7 @@ class Header extends Component {
 						<h3>
 							Your favourites
             			</h3>
-						<p className="closebtn" onClick={closeNav}>X</p>
+						<p className="closebtn" >X</p>
 					</div>
 					{/* JSX */}
 					{

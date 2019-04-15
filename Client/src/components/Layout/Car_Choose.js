@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
 import ProductCard from '../Product_card/Product_card';
-import { openSort, closeSort, openFilters, closeFilters } from "../Miscellaneous";
 import { graphql, compose } from "react-apollo";
 import { getAllBrands, getAllCars } from "../../queries/queries";
 import { Collapse } from "react-bootstrap";
+import Drawer from 'rc-drawer';
+import { Checkbox, Menu, Icon, Radio } from 'antd';
+import 'antd/dist/antd.css';
+import 'antd/lib/style';
+import 'antd/lib/menu/style';
+import 'rc-drawer/assets/index.css';
 import './Car_choose.scss'
+const SubMenu = Menu.SubMenu;
+const RadioGroup = Radio.Group;
 class Car_Choose extends Component {
     constructor(props) {
         super(props);
@@ -19,8 +26,31 @@ class Car_Choose extends Component {
             SlideFilterBrand: true,
             SlideFilterfuel: false,
             SlideFilterSeats: false,
-            sortType: "make"
+            sortType: "make",
+            openFilter: false,
+            openSort: false
         }
+    }
+    onChange = (bool) => {
+        console.log(bool);
+    }
+    onTouchEnd = () => {
+        this.setState({
+            openFilter: false,
+            openSort: false
+        });
+    }
+    onSwitchFilter = () => {
+        this.setState({
+            openFilter: !this.state.openFilter,
+            openSort: false
+        });
+    }
+    onSwitchSort = () => {
+        this.setState({
+            openSort: !this.state.openSort,
+            openFilter: false
+        });
     }
     HandleChange = (e, item, type) => {
         //Brand Filter
@@ -94,118 +124,95 @@ class Car_Choose extends Component {
         return (
             <div>
                 <div>
-                    <div id="Sort" className="sidenav" style={{ right: 0 }}>
-                        <div className="head">
-                            <h3>
-                                Sort
-            				</h3>
-                            <p className="closebtn" onClick={closeSort}>X</p>
+                    <Drawer
+                        onChange={this.onChange}
+                        open={this.state.openSort}
+                        onMaskClick={this.onTouchEnd}
+                        handler={false}
+                        placement={'right'}
+                        level={null}
+                        width={window.outerWidth < '600' ? "80vw" :"35vw"}>
+                        <div className="drawer_header">
+                            Sorts
                         </div>
-                        <div className="sort_input_group">
-                            <div className="input_group">
-                                <input type="radio" name="sort" value="acces"
-                                    onChange={e => this.HandleSort(e)} />Price (Low to High)<br />
-                            </div>
-                            <div className="input_group">
-                                <input type="radio" name="sort" value="desc"
-                                    onChange={e => this.HandleSort(e)} /> Price (High to Low)<br />
-                            </div>
-                            <div className="input_group">
-                                <input type="radio" name="sort" value="make"
-                                    onChange={e => this.HandleSort(e)} checked /> Make (A-Z)<br />
-                            </div>
-                        </div>
-                    </div>
-                    <div id="Filters" className="sidenav" style={{ left: 0 }}>
-                        <div className="head">
-                            <h3>
-                                Filters
-            				</h3>
-                            <p className="closebtn" onClick={closeFilters}>X</p>
-                        </div>
-                        <div >
-                            <div className="slide-card">
-                                {/* Brand */}
-                                <h3 onClick={() => this.setState({
-                                    SlideFilterBrand: !this.state.SlideFilterBrand,
-                                    SlideFilterfuel: false,
-                                    SlideFilterSeats: false
-                                })}
-                                    aria-controls="content1"
-                                    aria-expanded={this.state.SlideFilterBrand}>
-                                    Brand
-                                </h3>
-                                <Collapse in={this.state.SlideFilterBrand}>
-                                    <div id="content1">
-                                        {
-                                            !this.props.getAllBrands.loading ?
-                                                this.props.getAllBrands.brands.map((item, index) => {
-                                                    return (
-                                                        <div key={index} className="form-group1" style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
-                                                            <label style={{ margin: 0 }}>{item.brand}</label>
-                                                            <input type="checkbox" name="brand" value={item.brand}
-                                                                onChange={e => this.HandleChange(e, item, 'brand')} />
-                                                        </div>
-                                                    )
-                                                })
-                                                : ""
-                                        }
-                                    </div>
-                                </Collapse>
-                                {/* Seats */}
-                                <h3 onClick={() => this.setState({
-                                    SlideFilterSeats: !this.state.SlideFilterSeats,
-                                    SlideFilterBrand: false,
-                                    SlideFilterfuel: false
-                                })}
-                                    aria-controls="content2"
-                                    aria-expanded={this.state.SlideFilterSeats}>
-                                    Seats
-                                </h3>
-                                <Collapse in={this.state.SlideFilterSeats}>
-                                    <div id="content2">
-                                        {
-                                            ["2", "4", "5", "6", "7"].map((item, index) => {
-                                                return (
-                                                    <div key={index} className="form-group1" style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
-                                                        <label style={{ margin: 0 }}>{item} Seat </label>
-                                                        <input type="checkbox" name="brand" value={item}
-                                                            onChange={e => this.HandleChange(e, item, 'seats')} />
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                </Collapse>
-                                {/* Fuel-type */}
-                                <h3 onClick={() => this.setState({
-                                    SlideFilterfuel: !this.state.SlideFilterfuel,
-                                    SlideFilterSeats: false,
-                                    SlideFilterBrand: false
-                                })}
-                                    aria-controls="content3"
-                                    aria-expanded={this.state.SlideFilterfuel}>
-                                    Fuel-type
-                                </h3>
-                                <Collapse in={this.state.SlideFilterfuel}>
-                                    <div id="content3">
-                                        {
-                                            ["Petrol", "Electric(Battery)", "Diesel"].map((item, index) => {
-                                                return (
-                                                    <div key={index} className="form-group1" style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
-                                                        <label style={{ margin: 0 }}>{item}</label>
-                                                        <input type="checkbox" name="brand" value={item}
-                                                            onChange={e => this.HandleChange(e, item, 'fuel')} />
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                </Collapse>
+                        <div style={{ right: 0 }}>
+                            <div className="sort_input_group">
+                                <RadioGroup onChange={e => this.HandleSort(e)} style={{ margin: "20px 0px" }}>
+                                    <Radio name="sort" value="acces" style={{ margin: "10px 20px" }}>
+                                        <span>Price (Low to High) <Icon type="arrow-up" style={{ margin: "0 0 0 5px", color: 'skyblue' }} /></span>
+                                    </Radio><br />
+                                    <Radio name="sort" value="desc" style={{ margin: "10px 20px" }}>
+                                        <span>Price (High to Low) <Icon type="arrow-down" style={{ margin: "0 0 0 5px", color: 'skyblue' }} /></span>
+                                    </Radio><br />
+                                    <Radio name="sort" value="make" style={{ margin: "10px 20px" }}>
+                                        <span>Make (A-Z)<Icon type="flag" style={{ margin: "0 0 0 5px", color: 'skyblue' }} /></span>
+                                    </Radio><br />
+                                </RadioGroup>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </Drawer>
+                    <Drawer
+                        onChange={this.onChange}
+                        open={this.state.openFilter}
+                        onMaskClick={this.onTouchEnd}
+                        placement={'left'}
+                        handler={false}
+                        level={null}
+                        width={window.outerWidth < '600' ? "80vw" :"35vw"}>
+                        <div className="drawer_header">
+                            Filters
+                        </div>
+                        <Menu
+                            defaultSelectedKeys={['1']}
+                            defaultOpenKeys={['brand']}
+                            mode="inline" >
+                            {/* Brands */}
+                            <SubMenu key="brand" title={<span><Icon type="flag" theme="twoTone" /><span>Brands</span></span>}>
+                                {
+                                    !this.props.getAllBrands.loading ?
+                                        this.props.getAllBrands.brands.map((item, index) => {
+                                            return (
+                                                <div key={index} className="form-group1" style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
+                                                    <label style={{ margin: 0 }}>{item.brand}</label>
+                                                    <Checkbox name="brand" value={item.brand}
+                                                        onChange={e => this.HandleChange(e, item, 'brand')} ></Checkbox>
+                                                </div>
+                                            )
+                                        })
+                                        : ""
+                                }
+                            </SubMenu>
+                            {/* Seats */}
+                            <SubMenu key="seats" title={<span><Icon type="car" theme="twoTone" /><span>Seats</span></span>}>
+                                {
+                                    ["2", "4", "5", "6", "7"].map((item, index) => {
+                                        return (
+                                            <div key={index} className="form-group1" style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
+                                                <label style={{ margin: 0 }}>{item} Seat </label>
+                                                <Checkbox name="seats" value={item}
+                                                    onChange={e => this.HandleChange(e, item, 'seats')} ></Checkbox>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </SubMenu>
+                            {/* Fuel-type */}
+                            <SubMenu key="fuel" title={<span><Icon type="fire" theme="twoTone" /><span>Fuel-type</span></span>}>
+                                {
+                                    ["Petrol", "Electric(Battery)", "Diesel"].map((item, index) => {
+                                        return (
+                                            <div key={index} className="form-group1" style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px' }}>
+                                                <label style={{ margin: 0 }}>{item}</label>
+                                                <Checkbox name="fuel" value={item}
+                                                    onChange={e => this.HandleChange(e, item, 'fuel')} ></Checkbox>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </SubMenu>
+                        </Menu>
+                    </Drawer>
+                </div >
                 <div className="car_chooser" id="car_chooser">
                     <div className="card_filter">
                         <div className="card_filter_header">
@@ -213,8 +220,8 @@ class Car_Choose extends Component {
                             <p>Let us help you find your perfect car</p>
                         </div>
                         <div className="card_filter_custom">
-                            <button onClick={openFilters} id="openFilter">Filters</button>
-                            <button onClick={openSort} id="openSort">Sort</button>
+                            <button onClick={this.onSwitchFilter}>Filters</button>
+                            <button onClick={this.onSwitchSort}>Sort</button>
                         </div>
                     </div>
                     <div className="cc_cars_container">

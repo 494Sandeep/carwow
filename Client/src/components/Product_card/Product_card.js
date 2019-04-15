@@ -17,7 +17,6 @@ class ProductCard extends Component {
             this.props.getFav.user.fav.forEach(element => {
                 if (element.model === item.model)
                     status = true;
-
             })
 
         this.props.addFav({

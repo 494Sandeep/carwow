@@ -1,12 +1,14 @@
-import React, { Component } from 'react'
+import React from "react";
 
-class Contact extends Component {
+
+class Contact extends React.Component {
+
+
   render() {
     return (
-      <div>
-        Contact
-      </div>
-    )
+      <div>HEllo</div>
+    );
   }
 }
+
 export default Contact;
